@@ -15,6 +15,12 @@ function addTodo()
 
     const item = document.createElement('li')
     item.innerText = value
-    list.appendChild(item)
+
+    const deleteBtn = document.createElement("button")
+    item.append(deleteBtn)
+
+    deleteBtn.addEventListener("click", () => {item.remove()})
+
+    list.append(item)
     input.value = ""
 }
