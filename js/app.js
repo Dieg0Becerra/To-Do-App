@@ -3,8 +3,7 @@ const input = document.getElementById("todo-input")
 const list = document.getElementById("list")
 const completedList = document.getElementById("completed-list")
 
-const todo = {}
-
+let nextID = 1
 
 
 btn.addEventListener('click', () => addTodo())
@@ -19,15 +18,17 @@ input.addEventListener('keypress', (e) =>
 
 function addTodo()
 {    
+    const todo = {}
     //the basic functionality to add tasks
-    const value = input.value
+    todo.text = input.value
+    todo.ID = nextID++
 
-    if (value === "") return
+    if (todo.text === "") return
 
-    const item = document.createElement('li')
-    item.innerText = value
+    todo.element = document.createElement('li')
+    todo.element.innerText = todo.text
 
-    list.append(item)
+    list.append(todo.element)
     input.value = "" //clears input
 
 
@@ -35,21 +36,23 @@ function addTodo()
     //delete functionality
     const deleteBtn = document.createElement("button")
     deleteBtn.innerText = "delete"
-    item.append(deleteBtn)
+    todo.element.append(deleteBtn)
 
-    deleteBtn.addEventListener("click", () => {item.remove()})
+    deleteBtn.addEventListener("click", () => {todo.element.remove()})
 
 
 
     //complete functionaility
     const completeBtn = document.createElement("button")
     completeBtn.innerText = "complete"
-    item.append(completeBtn)
+    todo.element.append(completeBtn)
 
     completeBtn.addEventListener("click", () => 
         {
-            completedList.append(item)
+            completedList.append(todo.element)
             completeBtn.remove()
+
+            todo.done = true
         })
 
 }
