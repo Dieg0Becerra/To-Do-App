@@ -7,3 +7,12 @@ Planned Features
 6. Firebase database
 7. Auth
 8. CSS
+
+
+
+todo object:
+ID - next ID
+text - input/value
+element - item
+done - (no analgous)
+

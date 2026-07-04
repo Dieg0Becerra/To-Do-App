@@ -4,7 +4,9 @@ const list = document.getElementById("list")
 const completedList = document.getElementById("completed-list")
 
 let nextID = 1
+let storage = []
 
+loadTodos()
 
 btn.addEventListener('click', () => addTodo())
 input.addEventListener('keypress', (e) =>
@@ -19,30 +21,40 @@ input.addEventListener('keypress', (e) =>
 function addTodo()
 {    
     const todo = {}
-    //the basic functionality to add tasks
+
+    if (input.value === "") return //input validation
+
+     //the basic functionality to add tasks
     todo.text = input.value
     todo.ID = nextID++
     todo.priority = 1
+    todo.done = false
 
-    if (todo.text === "") return //input validation
+    renderTodo(todo)
 
+    storage.push(todo)
+
+    saveTodo()
+
+    input.value = "" //clears input
+   
+}
+
+function renderTodo(todo) //worries about dom
+{    
     //populating list element
     todo.element = document.createElement('li')
     todo.element.innerText = todo.text
 
     //adding element to list
     list.append(todo.element)
-    input.value = "" //clears input
-
-
 
     //delete functionality
     const deleteBtn = document.createElement("button")
     deleteBtn.innerText = "delete"
     todo.element.append(deleteBtn)
 
-    deleteBtn.addEventListener("click", () => {todo.element.remove()})
-
+    deleteBtn.addEventListener("click", () => {todo.element.remove(); deleteTodo(todo)})
 
 
     //complete functionaility
@@ -56,6 +68,7 @@ function addTodo()
             completeBtn.remove()
 
             todo.done = true
+            saveTodo()
         })
 
 
@@ -69,8 +82,7 @@ function addTodo()
         
         todo.priority += change
         priorityNum.innerText = todo.priority
-        console.log('called with', change)
-
+        saveTodo()
     }
     
     const priorityNum = document.createElement("span")
@@ -89,6 +101,27 @@ function addTodo()
     todo.element.append(plusP)
 
     plusP.addEventListener("click", () => updatePriority(1))
-    
+}
 
+function saveTodo()
+{
+    console.log("here i am")
+
+    localStorage.setItem("todos", JSON.stringify(storage))
+}
+
+function deleteTodo(todo)
+{
+    storage = storage.filter(t => t.ID != todo.ID)
+    saveTodo()
+}
+
+function loadTodos()
+{
+    const saved = JSON.parse(localStorage.getItem("todos"))
+
+    if(saved)
+    {
+        saved.forEach(todo => { renderTodo(todo)});
+    }
 }
