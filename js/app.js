@@ -22,12 +22,15 @@ function addTodo()
     //the basic functionality to add tasks
     todo.text = input.value
     todo.ID = nextID++
+    todo.priority = 1
 
-    if (todo.text === "") return
+    if (todo.text === "") return //input validation
 
+    //populating list element
     todo.element = document.createElement('li')
     todo.element.innerText = todo.text
 
+    //adding element to list
     list.append(todo.element)
     input.value = "" //clears input
 
@@ -54,5 +57,38 @@ function addTodo()
 
             todo.done = true
         })
+
+
+    //adding priority and buttons
+    function updatePriority(change) //helper function
+    {
+        if(todo.priority + change > 5 || todo.priority + change < 1)
+        {
+            return
+        }
+        
+        todo.priority += change
+        priorityNum.innerText = todo.priority
+        console.log('called with', change)
+
+    }
+    
+    const priorityNum = document.createElement("span")
+    priorityNum.innerText = todo.priority
+    
+    const minusP = document.createElement("button")
+    minusP.innerText = "-"
+    todo.element.append(minusP)
+
+    minusP.addEventListener("click", () => updatePriority(-1))
+    
+    todo.element.append(priorityNum)
+
+    const plusP = document.createElement("button")
+    plusP.innerText = "+"
+    todo.element.append(plusP)
+
+    plusP.addEventListener("click", () => updatePriority(1))
+    
 
 }
