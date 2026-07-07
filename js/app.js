@@ -9,6 +9,7 @@ const dateInput = document.getElementById("due-date")
 const popupWindow = document.getElementById("window")
 const timeFrame = document.getElementById("time-frame")
 const startingPriority = document.getElementById("priority")
+const sortSelect = document.getElementById("sort-select")
 
 let nextID = 1
 let storage = []
@@ -24,6 +25,8 @@ btn.addEventListener('click', () => popWindow())
             addTodo()
         }
     })*/
+
+sortSelect.addEventListener("change", () => {sortTodos(); console.log("sorted")})        
 
 function popWindow()
 {
@@ -60,6 +63,8 @@ function addTodo()
 
     saveTodo()
 
+    sortTodos()
+
     input.value = "" //clears input
    
 }
@@ -81,19 +86,25 @@ function renderTodo(todo) //worries about dom
     deleteBtn.addEventListener("click", () => {todo.element.remove(); deleteTodo(todo)})
 
 
-    //complete functionaility
+    //complete functionality
     const completeBtn = document.createElement("button")
     completeBtn.innerText = "complete"
     todo.element.append(completeBtn)
 
     completeBtn.addEventListener("click", () => 
         {
+            todo.done = true
             completedList.append(todo.element)
             completeBtn.remove()
-
-            todo.done = true
             saveTodo()
         })
+
+    if (todo.done === true) 
+    {
+        completedList.append(todo.element)
+        completeBtn.remove()
+        console.log("if completed")
+    }
 
 
     //adding priority and buttons
@@ -105,12 +116,12 @@ function renderTodo(todo) //worries about dom
         }
         
         todo.priority += change
-        priorityNum.innerText = todo.priority
+        docPriorityNum.innerText = todo.priority
         saveTodo()
     }
     
-    const priorityNum = document.createElement("span")
-    priorityNum.innerText = todo.priority
+    const docPriorityNum = document.createElement("span")
+    docPriorityNum.innerText = todo.priority
     
     const minusP = document.createElement("button")
     minusP.innerText = "-"
@@ -118,7 +129,7 @@ function renderTodo(todo) //worries about dom
 
     minusP.addEventListener("click", () => updatePriority(-1))
     
-    todo.element.append(priorityNum)
+    todo.element.append(docPriorityNum)
 
     const plusP = document.createElement("button")
     plusP.innerText = "+"
@@ -146,6 +157,42 @@ function loadTodos()
 
     if(saved)
     {
-        saved.forEach(todo => { renderTodo(todo)});
+        storage = saved
+        saved.forEach(todo => 
+            {
+                renderTodo(todo)
+
+                if (todo.ID >= nextID) nextID = todo.ID + 1
+            });
     }
+
+    sortTodos()
+}
+
+function sortTodos()
+{
+    list.innerHTML = ""
+    completedList.innerHTML = ""
+
+
+    console.log(sortSelect.value)
+
+    if (sortSelect.value === "sort-id")
+    {
+        storage.sort((a, b) => a.ID - b.ID)
+        storage.forEach(todo => renderTodo(todo))
+    }
+
+    else if (sortSelect.value === "sort-priority")
+    {
+        storage.sort((a, b) => b.priority - a.priority)
+        storage.forEach(todo => renderTodo(todo))
+    }
+
+    else if(sortSelect.value === "sort-date")
+    {
+        storage.sort((a, b) => new Date(a.date) - new Date(b.date))
+        storage.forEach(todo => renderTodo(todo))
+    }
+
 }
