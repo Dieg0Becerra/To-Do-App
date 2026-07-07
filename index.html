@@ -10,8 +10,22 @@
     <body>
         <h2> To dos</h2>
         <u1 id = "list"></u1>
-        <input type = "text" id="todo-input" placeholder = "Add task...">
-        <button id = "add-btn">Add</button>
+        <button id = "popup-btn">Add</button>
+
+        <div id = "window" style = "display:none">
+            <input type = "text" id = "todo-input" placeholder = "Task...">
+            <input type = "date" id = "due-date">
+            <select id = "time-frame">
+                <option value = "Short term">Short term</option>
+                <option value = "Long term">Long term</option>
+            </select>
+
+            <input type = "number" id = "priority" min = "1" max = "5">
+
+            <button id = "add-btn">Add</button>
+            <button id = "cancel-btn">Cancel</button>
+
+        </div>
 
         
         <u1 id = "completed-list"></u1>

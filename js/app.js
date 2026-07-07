@@ -1,21 +1,42 @@
-const btn = document.getElementById("add-btn")
+const btn = document.getElementById("popup-btn")
 const input = document.getElementById("todo-input")
 const list = document.getElementById("list")
 const completedList = document.getElementById("completed-list")
+
+const addBtn = document.getElementById("add-btn")
+const cancelBtn = document.getElementById("cancel-btn")
+const dateInput = document.getElementById("due-date")
+const popupWindow = document.getElementById("window")
+const timeFrame = document.getElementById("time-frame")
+const startingPriority = document.getElementById("priority")
 
 let nextID = 1
 let storage = []
 
 loadTodos()
 
-btn.addEventListener('click', () => addTodo())
-input.addEventListener('keypress', (e) =>
+
+btn.addEventListener('click', () => popWindow())
+/*input.addEventListener('keypress', (e) =>
     {
         if (e.key === "Enter")
         {
             addTodo()
         }
-    })
+    })*/
+
+function popWindow()
+{
+    popupWindow.style.display = "block"
+
+    cancelBtn.addEventListener("click", () => {popupWindow.style.display = "none"})
+
+    addBtn.addEventListener("click", () =>
+        {
+            addTodo()
+            popupWindow.style.display = "none"
+        })
+}
 
 
 function addTodo()
@@ -27,8 +48,11 @@ function addTodo()
      //the basic functionality to add tasks
     todo.text = input.value
     todo.ID = nextID++
-    todo.priority = 1
+    todo.priority = parseInt(startingPriority.value)
     todo.done = false
+    todo.date = dateInput.value
+    todo.time = timeFrame.value
+    
 
     renderTodo(todo)
 
@@ -44,7 +68,7 @@ function renderTodo(todo) //worries about dom
 {    
     //populating list element
     todo.element = document.createElement('li')
-    todo.element.innerText = todo.text
+    todo.element.innerText = `${todo.text} | ${todo.time} | Due: ${todo.date}`
 
     //adding element to list
     list.append(todo.element)
