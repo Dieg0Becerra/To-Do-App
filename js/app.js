@@ -1,6 +1,8 @@
 const btn = document.getElementById("popup-btn")
 const input = document.getElementById("todo-input")
 const list = document.getElementById("list")
+const shortList = document.getElementById("short-list")
+const longList = document.getElementById("long-list")
 const completedList = document.getElementById("completed-list")
 
 const addBtn = document.getElementById("add-btn")
@@ -10,6 +12,7 @@ const popupWindow = document.getElementById("window")
 const timeFrame = document.getElementById("time-frame")
 const startingPriority = document.getElementById("priority")
 const sortSelect = document.getElementById("sort-select")
+const filterTimeframe = document.getElementById("filter-timeframe")
 
 let nextID = 1
 let storage = []
@@ -26,7 +29,8 @@ btn.addEventListener('click', () => popWindow())
         }
     })*/
 
-sortSelect.addEventListener("change", () => {sortTodos(); console.log("sorted")})        
+sortSelect.addEventListener("change", () => {sortTodos(); console.log("sorted")})
+filterTimeframe.addEventListener("change", () => {sortTodos()})    
 
 function popWindow()
 {
@@ -76,7 +80,22 @@ function renderTodo(todo) //worries about dom
     todo.element.innerText = `${todo.text} | ${todo.time} | Due: ${todo.date}`
 
     //adding element to list
-    list.append(todo.element)
+    
+    if(filterTimeframe.checked === false)
+    {
+        list.append(todo.element)
+    }
+
+    else if(todo.time === "Short term")
+    {
+        shortList.append(todo.element)
+    }
+
+    else if(todo.time === "Long term")
+    {
+        longList.append(todo.element)
+    }
+
 
     //delete functionality
     const deleteBtn = document.createElement("button")
@@ -173,7 +192,8 @@ function sortTodos()
 {
     list.innerHTML = ""
     completedList.innerHTML = ""
-
+    shortList.innerHTML= ""
+    longList.innerHTML = ""
 
     console.log(sortSelect.value)
 

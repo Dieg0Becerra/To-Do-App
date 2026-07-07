@@ -18,3 +18,7 @@ text - input/value
 element - item
 done - (no analgous)
 
+design wants
+1. Long and short term side by side
+2. Setting button and ability to set themes!!
+3. nicer pop up window doesnt move other stuff just overlays

@@ -11,12 +11,18 @@
         <h2> To dos</h2>
 
         <select id = "sort-select">
-            <option value = "sort-id" selected>By ID#</option>
+            <option value = "sort-id" selected>By Order Added</option>
             <option value = "sort-priority">By Priority</option>
             <option value = "sort-date">By Date</option>
         </select>
 
+        <input type = "checkbox" id = "filter-timeframe">
+        <label for = "filter-timeframe">Filter by Timeframe</label>
+
         <u1 id = "list"></u1>
+        <u1 id = "short-list"></u1>
+        <u1 id = "long-list"></u1>
+
         <button id = "popup-btn">Add</button>
 
         <div id = "window" style = "display:none">
