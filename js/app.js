@@ -1,3 +1,5 @@
+import { firebaseApp, auth, googleAuth } from "./firebase-config.js"
+
 const btn = document.getElementById("popup-btn")
 const input = document.getElementById("todo-input")
 const list = document.getElementById("list")
