@@ -1,5 +1,7 @@
-import { firebaseApp, auth, googleAuth } from "./firebase-config.js"
+import { firebaseApp, auth, googleAuth, fireSave} from "./firebase-config.js"
 import { onAuthStateChanged, signInWithPopup, signOut} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js"
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+
 
 const btn = document.getElementById("popup-btn")
 const input = document.getElementById("todo-input")
@@ -19,8 +21,10 @@ const filterTimeframe = document.getElementById("filter-timeframe")
 const loginBtn = document.getElementById("login-btn")
 const logoutBtn = document.getElementById("logout-btn")
 
+//setting up base case for functions and current user to pull from
 let currentUser = null
-
+let saveTodo = saveToLocal
+let loadTodos = loadFromLocal
 
 
 let nextID = 1
@@ -46,10 +50,21 @@ filterTimeframe.addEventListener("change", () => {sortTodos()})
 //listeners regarding auth
 onAuthStateChanged(auth, (user) =>
 {
-    console.log("authenticated")
+   currentUser = user
 
-    currentUser = user
+   if(user)
+   {
+    let saveTodo = saveToFirebase
+    let loadTodos = loadFromFirebase
+   }
 
+   else
+    {
+    let saveTodo = saveToLocal
+    let loadTodos = loadFromLocal
+    }
+
+    loadTodos()
 })
 
 loginBtn.addEventListener('click', () => {signInWithPopup(auth, googleAuth)})
@@ -181,7 +196,7 @@ function renderTodo(todo) //worries about dom
     plusP.addEventListener("click", () => updatePriority(1))
 }
 
-function saveTodo()
+function saveToLocal()
 {
     console.log("here i am")
 
@@ -194,7 +209,7 @@ function deleteTodo(todo)
     saveTodo()
 }
 
-function loadTodos()
+function loadFromLocal()
 {
     const saved = JSON.parse(localStorage.getItem("todos"))
 
@@ -240,3 +255,36 @@ function sortTodos()
     }
 
 }
+
+function saveToFirebase()
+{
+    let cleanTodos = storage.map(todo => 
+    {
+        const { element, ...data} = todo
+        return data
+    }
+    )
+
+    setDoc(doc(fireSave, "users", currentUser.uid, "todos", "allTodos"), { todos: cleanTodos})
+}
+
+async function loadFromFirebase()
+{
+    const savedDoc = await getDoc(fireSave,  "users", currentUser.uid, "todos", "allTodos")
+
+    if (savedDoc.exists())
+    {
+        const saved = savedDoc.data().todos
+        storage = saved
+
+        saved.forEach(todo => 
+            {
+                renderTodo(todo)
+
+                if (todo.ID >= nextID) nextID = todo.ID + 1
+            });
+    }
+    
+    sortTodos()
+}
+

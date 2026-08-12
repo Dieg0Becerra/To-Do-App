@@ -24,3 +24,7 @@ design wants
 2. Setting button and ability to set themes!!
 3. nicer pop up window doesnt move other stuff just overlays
 4. Uncomplete button once design make it a lil circle arorw
+
+
+REMEBER TO WORRY ABOUT
+what to do with overlapping todos so when theres local and firebase
