@@ -1,4 +1,5 @@
 import { firebaseApp, auth, googleAuth } from "./firebase-config.js"
+import { onAuthStateChanged, signInWithPopup, signOut} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js"
 
 const btn = document.getElementById("popup-btn")
 const input = document.getElementById("todo-input")
@@ -15,6 +16,12 @@ const timeFrame = document.getElementById("time-frame")
 const startingPriority = document.getElementById("priority")
 const sortSelect = document.getElementById("sort-select")
 const filterTimeframe = document.getElementById("filter-timeframe")
+const loginBtn = document.getElementById("login-btn")
+const logoutBtn = document.getElementById("logout-btn")
+
+let currentUser = null
+
+
 
 let nextID = 1
 let storage = []
@@ -32,7 +39,22 @@ btn.addEventListener('click', () => popWindow())
     })*/
 
 sortSelect.addEventListener("change", () => {sortTodos(); console.log("sorted")})
-filterTimeframe.addEventListener("change", () => {sortTodos()})    
+filterTimeframe.addEventListener("change", () => {sortTodos()})
+
+
+
+//listeners regarding auth
+onAuthStateChanged(auth, (user) =>
+{
+    console.log("authenticated")
+
+    currentUser = user
+
+})
+
+loginBtn.addEventListener('click', () => {signInWithPopup(auth, googleAuth)})
+loginBtn.addEventListener('click', () => {signOut(auth)})
+
 
 function popWindow()
 {
@@ -83,7 +105,7 @@ function renderTodo(todo) //worries about dom
 
     //adding element to list
     
-    if(filterTimeframe.checked === false)
+    if(filterTimeframe.checked === false) //controls if sorted by timeframe
     {
         list.append(todo.element)
     }
