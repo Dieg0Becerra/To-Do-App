@@ -1,17 +1,375 @@
-html, body 
-{
+/* ---------- design tokens ---------- */
+:root {
+    --bg: #f3f2fb;
+    --surface: #ffffff;
+    --border: #e4e1f5;
+    --text: #2c2a3d;
+    --text-muted: #6f6c8a;
+
+    --primary: #6c5ce7;
+    --primary-dark: #5541d6;
+    --primary-light: #efecff;
+
+    --danger: #e0577a;
+    --danger-dark: #c93f61;
+    --success: #34b378;
+    --success-dark: #279060;
+
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 14px rgba(44, 42, 61, 0.08);
+    --shadow-lg: 0 12px 32px rgba(44, 42, 61, 0.18);
+}
+
+/* ---------- base ---------- */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
     padding: 0;
 }
 
-#top-bar 
-{
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+}
+
+h2, h3 {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* ---------- top bar ---------- */
+#top-bar {
     position: sticky;
     top: 0;
     align-items: center;
     display: flex;
     justify-content: space-between;
-    padding: 0px 14px;
+    padding: 16px 28px;
     z-index: 10;
-    background-color: grey;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    box-shadow: var(--shadow);
+}
+
+#top-bar h2 {
+    letter-spacing: 0.3px;
+}
+
+#auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#auth-buttons button {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+#auth-buttons button:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* ---------- layout ---------- */
+.container {
+    max-width: 720px;
+    margin: 32px auto;
+    padding: 0 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* ---------- controls ---------- */
+#controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    box-shadow: var(--shadow);
+}
+
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.checkbox-field input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+}
+
+/* ---------- generic form controls ---------- */
+select,
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+select:focus,
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+button {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+    background: #e2ddff;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* ---------- add task button ---------- */
+#popup-btn {
+    align-self: flex-start;
+    background: var(--primary);
+    color: #fff;
+    padding: 11px 22px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+#popup-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* ---------- lists ---------- */
+#lists {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+ul:empty {
+    display: none;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.todo-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+}
+
+.todo-text {
+    flex: 1 1 auto;
+    min-width: 160px;
+    font-size: 0.95rem;
+}
+
+.todo-item.done {
+    opacity: 0.6;
+}
+
+.todo-item.done .todo-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* ---------- item action buttons ---------- */
+.todo-item button {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    border-radius: 6px;
+}
+
+.delete-btn {
+    background: #fdeaef;
+    color: var(--danger-dark);
+}
+
+.delete-btn:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+.complete-btn {
+    background: #e6f7ef;
+    color: var(--success-dark);
+}
+
+.complete-btn:hover {
+    background: var(--success);
+    color: #fff;
+}
+
+.priority-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.priority-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-radius: 50%;
+}
+
+.priority-num {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* ---------- completed section ---------- */
+#completed-section {
+    border-top: 1px dashed var(--border);
+    padding-top: 18px;
+}
+
+#completed-section h3 {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+}
+
+#completed-list:empty::after {
+    content: "Nothing completed yet.";
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+#completed-list:empty {
+    display: block;
+}
+
+/* ---------- add task popup ---------- */
+#window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(360px, 90vw);
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#window h3 {
+    margin-bottom: 4px;
+}
+
+#window label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: -6px;
+}
+
+#window input,
+#window select {
+    width: 100%;
+}
+
+.window-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+#cancel-btn {
+    background: var(--bg);
+    color: var(--text-muted);
+}
+
+#add-btn {
+    background: var(--primary);
+    color: #fff;
+}
+
+#add-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 480px) {
+    #top-bar {
+        padding: 14px 16px;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 0 14px 40px;
+    }
+
+    .todo-item {
+        padding: 10px 12px;
+    }
+
+    .priority-group {
+        margin-left: 0;
+    }
 }

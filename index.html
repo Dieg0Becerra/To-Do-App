@@ -2,13 +2,12 @@
 
 <html>
     <head>
+        <meta charset = "UTF-8">
         <title>Todo by africa</title>
-        <link rel = "stylesheet" href = "css/style.css"
-        <meta charset = "UTF - 8">
-
+        <link rel = "stylesheet" href = "css/style.css">
     </head>
     <body>
-        
+
         <header id = "top-bar">
             <h2> To dos</h2>
 
@@ -18,42 +17,55 @@
 
             </div>
         </header>
-        
 
-        <select id = "sort-select">
-            <option value = "sort-id" selected>By Order Added</option>
-            <option value = "sort-priority">By Priority</option>
-            <option value = "sort-date">By Date</option>
-        </select>
+        <main class = "container">
 
-        <input type = "checkbox" id = "filter-timeframe">
-        <label for = "filter-timeframe">Filter by Timeframe</label>
+            <div id = "controls-bar">
+                <select id = "sort-select">
+                    <option value = "sort-id" selected>By Order Added</option>
+                    <option value = "sort-priority">By Priority</option>
+                    <option value = "sort-date">By Date</option>
+                </select>
 
-        <u1 id = "list"></u1>
-        <u1 id = "short-list"></u1>
-        <u1 id = "long-list"></u1>
+                <div class = "checkbox-field">
+                    <input type = "checkbox" id = "filter-timeframe">
+                    <label for = "filter-timeframe">Filter by Timeframe</label>
+                </div>
+            </div>
 
-        <button id = "popup-btn">Add</button>
+            <div id = "lists">
+                <ul id = "list"></ul>
+                <ul id = "short-list"></ul>
+                <ul id = "long-list"></ul>
+            </div>
 
-        <div id = "window" style = "display:none">
-            <input type = "text" id = "todo-input" placeholder = "Task...">
-            <input type = "date" id = "due-date">
-            <select id = "time-frame">
-                <option value = "Short term">Short term</option>
-                <option value = "Long term">Long term</option>
-            </select>
+            <button id = "popup-btn">+ Add Task</button>
 
-            <input type = "number" id = "priority" min = "1" max = "5">
+            <div id = "window" style = "display:none">
+                <h3>New Task</h3>
+                <input type = "text" id = "todo-input" placeholder = "Task...">
+                <input type = "date" id = "due-date">
+                <select id = "time-frame">
+                    <option value = "Short term">Short term</option>
+                    <option value = "Long term">Long term</option>
+                </select>
 
-            <button id = "add-btn">Add</button>
-            <button id = "cancel-btn">Cancel</button>
+                <label for = "priority">Priority</label>
+                <input type = "number" id = "priority" min = "1" max = "5">
 
-        </div>
+                <div class = "window-actions">
+                    <button id = "cancel-btn">Cancel</button>
+                    <button id = "add-btn">Add</button>
+                </div>
 
-        
-        <u1 id = "completed-list"></u1>
+            </div>
 
-        
+            <section id = "completed-section">
+                <h3>Completed</h3>
+                <ul id = "completed-list"></ul>
+            </section>
+
+        </main>
 
         <script type="module" src = "js/app.js"></script>
     </body>

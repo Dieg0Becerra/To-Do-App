@@ -68,7 +68,7 @@ onAuthStateChanged(auth, (user) =>
 })
 
 loginBtn.addEventListener('click', () => {signInWithPopup(auth, googleAuth)})
-loginBtn.addEventListener('click', () => {signOut(auth)})
+logoutBtn.addEventListener('click', () => {signOut(auth)})
 
 
 function popWindow()
@@ -116,7 +116,12 @@ function renderTodo(todo) //worries about dom
 {    
     //populating list element
     todo.element = document.createElement('li')
-    todo.element.innerText = `${todo.text} | ${todo.time} | Due: ${todo.date}`
+    todo.element.className = "todo-item"
+
+    const todoText = document.createElement("span")
+    todoText.className = "todo-text"
+    todoText.innerText = `${todo.text} | ${todo.time} | Due: ${todo.date}`
+    todo.element.append(todoText)
 
     //adding element to list
     
@@ -138,6 +143,7 @@ function renderTodo(todo) //worries about dom
 
     //delete functionality
     const deleteBtn = document.createElement("button")
+    deleteBtn.className = "delete-btn"
     deleteBtn.innerText = "delete"
     todo.element.append(deleteBtn)
 
@@ -146,19 +152,22 @@ function renderTodo(todo) //worries about dom
 
     //complete functionality
     const completeBtn = document.createElement("button")
+    completeBtn.className = "complete-btn"
     completeBtn.innerText = "complete"
     todo.element.append(completeBtn)
 
-    completeBtn.addEventListener("click", () => 
+    completeBtn.addEventListener("click", () =>
         {
             todo.done = true
+            todo.element.classList.add("done")
             completedList.append(todo.element)
             completeBtn.remove()
             saveTodo()
         })
 
-    if (todo.done === true) 
+    if (todo.done === true)
     {
+        todo.element.classList.add("done")
         completedList.append(todo.element)
         completeBtn.remove()
         console.log("if completed")
@@ -178,20 +187,27 @@ function renderTodo(todo) //worries about dom
         saveTodo()
     }
     
+    const priorityGroup = document.createElement("span")
+    priorityGroup.className = "priority-group"
+    todo.element.append(priorityGroup)
+
     const docPriorityNum = document.createElement("span")
+    docPriorityNum.className = "priority-num"
     docPriorityNum.innerText = todo.priority
-    
+
     const minusP = document.createElement("button")
+    minusP.className = "priority-btn"
     minusP.innerText = "-"
-    todo.element.append(minusP)
+    priorityGroup.append(minusP)
 
     minusP.addEventListener("click", () => updatePriority(-1))
-    
-    todo.element.append(docPriorityNum)
+
+    priorityGroup.append(docPriorityNum)
 
     const plusP = document.createElement("button")
+    plusP.className = "priority-btn"
     plusP.innerText = "+"
-    todo.element.append(plusP)
+    priorityGroup.append(plusP)
 
     plusP.addEventListener("click", () => updatePriority(1))
 }
