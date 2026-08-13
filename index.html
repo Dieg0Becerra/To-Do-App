@@ -3,12 +3,22 @@
 <html>
     <head>
         <title>Todo by africa</title>
-        <link rel = "stylesheet" href "css/style.css"
+        <link rel = "stylesheet" href = "css/style.css"
         <meta charset = "UTF - 8">
 
     </head>
     <body>
-        <h2> To dos</h2>
+        
+        <header id = "top-bar">
+            <h2> To dos</h2>
+
+            <div id = "auth-buttons">
+                <button id = "login-btn">Login</button>
+                <button id = "logout-btn">Logout</button>
+
+            </div>
+        </header>
+        
 
         <select id = "sort-select">
             <option value = "sort-id" selected>By Order Added</option>
@@ -43,8 +53,7 @@
         
         <u1 id = "completed-list"></u1>
 
-        <button id = "login-btn">Login</button>
-        <button id = "logout-btn">Logout</button>
+        
 
         <script type="module" src = "js/app.js"></script>
     </body>
